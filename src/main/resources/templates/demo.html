@@ -24,7 +24,7 @@
             <div class="step-content">
                 <div class="row">
                     SDK Code to fetch settings:
-                    <pre style="display: inline;"><code>const data = await vwoSdk.getSettingsFile(accountId, sdkKey);</code></pre>
+                    <pre style="display: inline;"><code>String settingsFile =  VWO.getSettingsFile(accountId, sdkKey);</code></pre>
                     <div class="row">
                         <div class="input-field col s6">
                             <input id="account-id" name="account-id" type="text" class="validate" required="">
@@ -51,7 +51,7 @@
                 <pre><code id="sdk-settings"></code></pre>
 
                 SDK Code to launch
-                <pre style=""><code>vwoSDK.launch({settingsFile});
+                <pre style=""><code>VWO vwoInstance = VWO.launch(settingsFile).build();
               </code></pre>
                 <div class="step-actions">
                     <button class="waves-effect waves-dark btn blue next-step" data-feedback="initVWOSDK">NEXT</button>
@@ -129,7 +129,7 @@
                     </div>
 
                     SDK Code to track goal:
-                    <pre style="display: inline;"><code>vwoInstance.track(campaignKey, userid, goalIdentifier);</code></pre>
+                    <pre style="display: inline;"><code>vwoInstance.track(campaignKey, userId, goalIdentifier);</code></pre>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn blue" type="submit">DONE!</button>
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
