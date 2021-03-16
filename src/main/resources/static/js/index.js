@@ -27,6 +27,30 @@ const util = {
     }
 }
 
+function trackCampaign(destroyFeedback) {
+    if (history.pushState) {
+        let track = {};
+        track["userId"] = document.getElementById('user-id').value;
+        track["camapignKey"] = document.getElementById('campaign-key').value;
+        track["goalIdentifier"] = document.getElementById('goal-identifier').value;
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/track",
+            data: JSON.stringify(track),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                {
+                    console.log(track)
+                }
+            },
+        })
+    }
+}
+
 $(document).ready(() => {
     var stepper = document.querySelector('.stepper');
     var stepperInstace = new MStepper(stepper, {
@@ -93,7 +117,7 @@ $(document).ready(() => {
                     for (let j = 0; j < cap.stars; j++) {
                         starsHtml += `<span class="material-icons add-to-cart">star_rate</span>`;
                     }
-                    html += `<div class="product-item product-item" data-feedback="trackCampaign">
+                    html += `<div class="product-item product-item" onclick="trackCampaign();">
               <img src="${cap.src}">
               <div class="product-name">${cap.name}</div>
               <div class="product-price-box">
@@ -109,30 +133,8 @@ $(document).ready(() => {
             }
         })
     }
-    //
-    // window.trackCampaign = function trackCampaign(destroyFeedback) {
-    //     if (history.pushState) {
-    //         let track = {};
-    //         track["userId"] = document.getElementById('user-id').value;
-    //         track["campaignKey"] = document.getElementById('campaign-key').value;
-    //         track["goalIdentifier"] = document.getElementById('goal-identifier').value;
-    //
-    //         $.ajax({
-    //             type: "POST",
-    //             contentType: "application/json",
-    //             url: "/track",
-    //             data: JSON.stringify(track),
-    //             dataType: 'json',
-    //             cache: false,
-    //             timeout: 600000,
-    //             success: function (data) {
-    //                 {
-    //                     console.log(track)
-    //                 }
-    //             },
-    //         })
-    //     }
-    // }
+
+    // window.trackCamp
 
     window.activateCampaign = function activateCampaign(destroyFeedback) {
         if (history.pushState) {
@@ -199,10 +201,6 @@ $(document).ready(() => {
               for the User ID:
               <strong>${userId}</strong>
             <div>`);
-            // <div class="input-field col s6">
-            //             <input id="goal-identifier" name="goal-identifier" type="text" class="validate" required="">
-            //             <label for="goal-identifier">Goal Identifier</label>
-            //         </div>`);
 
                         destroyFeedback(true);
                     }

@@ -88,9 +88,9 @@ public class VWOController {
 
     Map<String, Boolean> isGoalTracked;
     if (trackCriteria.getVwoAdditionalParams() != null) {
-      isGoalTracked = vwoInstance.track(trackCriteria.getCamapignKey(), trackCriteria.getGoalIdentifier(), trackCriteria.getUserId());
+      isGoalTracked = vwoInstance.track(trackCriteria.getCamapignKey(), trackCriteria.getUserId(),trackCriteria.getGoalIdentifier(), trackCriteria.getVwoAdditionalParams());
     } else {
-      isGoalTracked = vwoInstance.track(trackCriteria.getCamapignKey(), trackCriteria.getGoalIdentifier(), trackCriteria.getUserId());
+      isGoalTracked = vwoInstance.track(trackCriteria.getCamapignKey(), trackCriteria.getUserId(), trackCriteria.getGoalIdentifier());
     }
 
     if (!isGoalTracked.get(trackCriteria.getCamapignKey())) {
