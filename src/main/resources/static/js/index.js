@@ -168,7 +168,7 @@ $(document).ready(() => {
                             for (let j = 0; j < recommendation.stars; j++) {
                                 starsHtml += `<span class="material-icons add-to-cart">star_rate</span>`;
                             }
-                            html += `<div class="product-item product-item--one" data-feedback="trackCampaign">
+                            html += `<div class="product-item product-item--one" onclick="trackCampaign();">
               <img src="${recommendation.src}">
               <div class="product-name">${recommendation.name}</div>
               <div class="product-price-box">
