@@ -27,29 +27,6 @@ const util = {
     }
 }
 
-function trackCampaign(destroyFeedback) {
-    if (history.pushState) {
-        let track = {};
-        track["userId"] = document.getElementById('user-id').value;
-        track["camapignKey"] = document.getElementById('campaign-key').value;
-        track["goalIdentifier"] = document.getElementById('goal-identifier').value;
-
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: "/track",
-            data: JSON.stringify(track),
-            dataType: 'json',
-            cache: false,
-            timeout: 600000,
-            success: function (data) {
-                {
-                    console.log(track)
-                }
-            },
-        })
-    }
-}
 
 $(document).ready(() => {
     var stepper = document.querySelector('.stepper');
@@ -62,14 +39,6 @@ $(document).ready(() => {
 
         return urlParams.get('userId');
     }
-
-    // $('#user-id').on('keyup', ev => {
-    //     $('#activate-code').html(`vwoInstance.activate(campaignKey, '${ev.target.value}');`);
-    // })
-    // $('#campaign-key').on('keyup', ev => {
-    //     $('#activate-code').html(`vwoInstance.activate('${ev.target.value}, 'userId');`);
-    // })
-
     if (document.getElementById('user-id')) {
         document.getElementById('user-id').value = getUserId();
     }
@@ -117,7 +86,7 @@ $(document).ready(() => {
                     for (let j = 0; j < cap.stars; j++) {
                         starsHtml += `<span class="material-icons add-to-cart">star_rate</span>`;
                     }
-                    html += `<div class="product-item product-item" onclick="trackCampaign();">
+                    html += `<div class="product-item">
               <img src="${cap.src}">
               <div class="product-name">${cap.name}</div>
               <div class="product-price-box">
@@ -135,6 +104,35 @@ $(document).ready(() => {
     }
 
     // window.trackCamp
+    window.addEventListener('click', (ev) => {
+        if (ev.target.parentElement.classList.contains('product-item')) {
+            let userId = document.getElementById('user-id').value;
+            let campaignKey = document.getElementById('campaign-key').value;
+            let goalIdentifier = document.getElementById('goal-identifier').value;
+
+            if (goalIdentifier) {
+                let track = {};
+                track["userId"] = userId
+                track["campaignKey"] = campaignKey
+                track["goalIdentifier"] = goalIdentifier
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/track",
+                    data: JSON.stringify(track),
+                    dataType: 'json',
+                    cache: false,
+                    timeout: 600000,
+                    success: function (data) {
+                        {
+                            alert('Goal triggered');
+                        }
+                    },
+                })
+            }
+        }
+    });
 
     window.activateCampaign = function activateCampaign(destroyFeedback) {
         if (history.pushState) {
@@ -168,7 +166,7 @@ $(document).ready(() => {
                             for (let j = 0; j < recommendation.stars; j++) {
                                 starsHtml += `<span class="material-icons add-to-cart">star_rate</span>`;
                             }
-                            html += `<div class="product-item product-item--one" onclick="trackCampaign();">
+                            html += `<div class="product-item product-item--one">
               <img src="${recommendation.src}">
               <div class="product-name">${recommendation.name}</div>
               <div class="product-price-box">
@@ -194,7 +192,7 @@ $(document).ready(() => {
                         $('#sdk-result').html(`
             <span class="material-icons info-icon">info</span>
             <div style="margin-left: 50px;">
-              ${userId + (data.variationName ? ' becomes ' : ' does not become ') + 'part of campaign.'}
+              <strong>${userId}</strong> ${(data.variationName ? ' becomes ' : ' does not become ') + `part of the campaign: <strong>${campaignKey}</strong>`}
               <br />
               Serving
               <strong>${variation || 'Control'}</strong>

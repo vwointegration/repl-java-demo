@@ -23,21 +23,20 @@
             <div data-step-label="Fetch Settings" class="step-title waves-effect waves-dark">Step 1</div>
             <div class="step-content">
                 <div class="row">
-                    SDK Code to fetch settings:
-                    <pre style="display: inline;"><code>String settingsFile =  VWO.getSettingsFile(accountId, sdkKey);</code></pre>
                     <div class="row">
-                        <div class="input-field col s6">
+                        <div class="input-field col s3">
                             <input id="account-id" name="account-id" type="text" class="validate" required="">
                             <label for="account-id">Account ID</label>
                         </div>
-                        <div class="input-field col s6">
-                            <input id="sdk-key" name="sdk-key" type="text" class="validate" required="">
+                        <div class="input-field col s3">
+                            <input id="sdk-key" name="sdk-key" type="password" class="validate" required="">
                             <label for="sdk-key">SDK Key</label>
                         </div>
                     </div>
                 </div>
+                <pre><code>// SDK Code to fetch settings:
+String settingsFile = VWO.getSettingsFile(accountId, sdkKey);</code></pre>
                 <div class="step-actions">
-<!--                    <img src="images/cap1.svg">-->
                     <button class="waves-effect waves-dark btn blue next-step" data-feedback="fetchSettings">FETCH
                     </button>
                 </div>
@@ -50,8 +49,8 @@
                 <br/>
                 <pre><code id="sdk-settings"></code></pre>
 
-                SDK Code to launch
-                <pre style=""><code>VWO vwoInstance = VWO.launch(settingsFile).build();
+                <pre><code>// Code to launch the VWO SDK
+VWO vwoInstance = VWO.launch(settingsFile).build();
               </code></pre>
                 <div class="step-actions">
                     <button class="waves-effect waves-dark btn blue next-step" data-feedback="initVWOSDK">NEXT</button>
@@ -65,19 +64,22 @@
             <div class="step-content" style="">
                 <div class="row">
 
-                    <div class="input-field col s6">
+                    <div class="input-field col s3">
                         <input id="campaign-key" name="campaign-key" type="text" class="validate" required="">
                         <label for="campaign-key">Campaign Key</label>
                     </div>
-                    <div class="input-field col s6">
+                    <div class="input-field col s3">
                         <input id="user-id" name="user-id" type="text" class="validate" required="">
                         <label for="user-id">User ID</label>
                     </div>
-
-                    SDK Code to activate campaign:
-                    <pre style="display: inline;"><code
-                            id="activate-code">vwoInstance.activate(campaignKey, userId);</code></pre>
+                    <div class="input-field col s3">
+                        <input id="goal-identifier" name="goal-identifier" type="text" class="validate" required="">
+                        <label for="goal-identifier">Goal Identifier</label>
+                    </div>
                 </div>
+                <pre><code id="activate-code">// SDK Code to activate campaign
+String variationName = vwoInstance.activate(campaignKey, userId);</code></pre>
+
                 <div class="step-actions">
                     <button class="waves-effect waves-dark btn blue next-step" data-feedback="activateCampaign">NEXT
                     </button>
@@ -92,13 +94,10 @@
             <div class="step-content">
                 <div class="row">
                     <div class="sdk-info" id="sdk-result"></div>
-                    <div class="input-field col s3">
-                        <input id="goal-identifier" name="goal-identifier" type="text" class="validate" required="">
-                        <label for="goal-identifier">Goal Identifier</label>
-                    </div>
+
                     <div style="background: #f6f6f6;
                 padding: 10px;
-                margin-top: 70px;">
+                margin-top: 10px;">
                         <div style="
                     margin: 10px 10px 20px 10px;
                     padding: 10px;
@@ -106,13 +105,8 @@
                     border: 2px solid #b9b9b9;
                     font-size: 25px;
                     font-weight: bold;
-                  ">E-Mart Software Pvt. Ltd.
+                  ">Online Caps Store
                         </div>
-                        <!-- <div class="input-field col s12">
-                          <i class="material-icons prefix">search</i>
-                          <input type="text" id="autocomplete-input" class="autocomplete">
-                          <label for="autocomplete-input">Search</label>
-                        </div> -->
 
                         <div class="row">
                             <div class="col s9" id="product-list">
@@ -132,7 +126,7 @@
                     </div>
 
                     SDK Code to track goal:
-                    <pre style="display: inline;"><code>vwoInstance.track(campaignKey, userId, goalIdentifier);</code></pre>
+                    <pre style="display: inline;"><code>Map&lt;String, Boolean&gt; goalTrackedMap = vwoInstance.track(campaignKey, userid, goalIdentifier);</code></pre>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn blue" type="submit">DONE!</button>
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>

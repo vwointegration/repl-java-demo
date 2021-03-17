@@ -4,17 +4,17 @@ import com.vwo.VWOAdditionalParams;
 
 public class TrackCriteria {
 
-  String camapignKey;
+  String campaignKey;
   String goalIdentifier;
   String userId;
   VWOAdditionalParams vwoAdditionalParams;
 
-  public String getCamapignKey() {
-    return camapignKey;
+  public String getCampaignKey() {
+    return campaignKey;
   }
 
-  public void setCamapignKey(String camapignKey) {
-    this.camapignKey = camapignKey;
+  public void setCampaignKey(String campaignKey) {
+    this.campaignKey = campaignKey;
   }
 
   public String getGoalIdentifier() {

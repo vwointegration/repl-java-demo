@@ -24,8 +24,8 @@ public class CapService {
 
   public List<CapData> getRecommendedCaps() {
     capList = new ArrayList<>();
-    capList.add(new CapData("Cap XLV", "/images/cap.svg", "$8.25", 3));
-    capList.add(new CapData("Cap VIII", "/images/cap1.svg", "$11.00", 4));
+    capList.add(new CapData("Cap VI", "/images/cap.svg", "10.22", 3));
+    capList.add(new CapData("Cap XXII", "/images/cap1.svg", "$8.98", 4));
 
     return capList;
   }
