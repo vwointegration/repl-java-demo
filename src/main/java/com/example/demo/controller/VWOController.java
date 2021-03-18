@@ -94,26 +94,32 @@ public class VWOController {
     }
 
     if (!isGoalTracked.get(trackCriteria.getCampaignKey())) {
-      trackResponse.setMsg("Goal could not be tracked");
+      trackResponse.setMsg("Goal not triggered");
     } else {
-      trackResponse.setMsg("Goal has been tracked");
+      trackResponse.setMsg("Goal triggered");
     }
 
     trackResponse.setResult("success");
     return ResponseEntity.ok(trackResponse);
   }
 
-  @GetMapping("/launch")
-  public ResponseEntity<?> launchVWO() {
+  @PostMapping("/launch")
+  public ResponseEntity<?> launchVWO(@Validated @RequestBody SettingsCriteria settingsCriteria, Errors errors) {
     LaunchResponse launchResponse = new LaunchResponse();
-    if (settingsFile == null || settingsFile.isEmpty()) {
-      launchResponse.setMsg("VWO could not be launched. Please try again");
-      return ResponseEntity.ok("null");
-    }
-    vwoInstance = VWO.launch(settingsFile).build();
-    launchResponse.setMsg("success");
-    launchResponse.setCapList(new CapService().getAllCaps());
+    SettingsResponse response = new SettingsResponse();
 
-    return ResponseEntity.ok(launchResponse);
+    if (errors.hasErrors()) {
+      response.setMsg(errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+      return ResponseEntity.badRequest().body(response);
+    }
+
+    settingsFile = VWO.getSettingsFile(settingsCriteria.getAccountId(), settingsCriteria.getApiKey());
+    if (settingsFile == null || settingsFile.isEmpty()) {
+      response.setMsg("VWO could not be launched. Please try again");
+      return ResponseEntity.status(400).body("Settings file could not be fetched. Please pass a valid accountId and apikey");
+    } else {
+      vwoInstance = VWO.launch(settingsFile).build();
+      return ResponseEntity.ok(response);
+    }
   }
 }
