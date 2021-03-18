@@ -38,7 +38,7 @@
                 <pre><code>// SDK Code to fetch settings in Java:
 String settingsFile = VWO.getSettingsFile(accountId, sdkKey);<br>
 // SDK Code to fetch settings in JavaScript:
-const data = await vwoSdk.getSettingsFile(accountId, sdkKey); </code></pre>
+const data = await vwoSdk.getSettingsFile(accountId, sdkKey);</code></pre>
 
                 <div class="step-actions">
                     <button class="waves-effect waves-dark btn blue next-step" data-feedback="fetchSettings">FETCH
@@ -53,8 +53,12 @@ const data = await vwoSdk.getSettingsFile(accountId, sdkKey); </code></pre>
                 <br/>
                 <pre><code id="sdk-settings"></code></pre>
 
-                <pre><code>// Code to launch the VWO SDK
-VWO vwoInstance = VWO.launch(settingsFile).build();
+                <pre><code>// Code to launch the VWO SDK in JAVA
+VWO vwoInstance = VWO.launch(settingsFile).build();<br>
+// Code to launch the VWO SDK in JavaScript
+await vwoSDK.launch({
+  settingsFile
+});;
               </code></pre>
                 <div class="step-actions">
                     <button class="waves-effect waves-dark btn blue next-step" data-feedback="initVWOSDK">NEXT</button>
@@ -81,8 +85,10 @@ VWO vwoInstance = VWO.launch(settingsFile).build();
                         <label for="goal-identifier">Goal Identifier</label>
                     </div>
                 </div>
-                <pre><code id="activate-code">// SDK Code to activate campaign
-String variationName = vwoInstance.activate(campaignKey, userId);</code></pre>
+                <pre><code id="activate-code">
+// SDK Code to activate campaign in JavaScript
+vwoInstance.activate(campaignKey, userId);</code></pre>
+
 
                 <div class="step-actions">
                     <button class="waves-effect waves-dark btn blue next-step" data-feedback="activateCampaign">NEXT
@@ -129,7 +135,7 @@ String variationName = vwoInstance.activate(campaignKey, userId);</code></pre>
                         </div>
                     </div>
 
-                    SDK Code to track goal:
+                    SDK Code to track goal in JAVA:
                     <pre style="display: inline;"><code>Map&lt;String, Boolean&gt; goalTrackedMap = vwoInstance.track(campaignKey, userid, goalIdentifier);</code></pre>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn blue" type="submit">DONE!</button>
