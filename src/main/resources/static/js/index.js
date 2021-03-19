@@ -30,7 +30,7 @@ const capList = [{
     stars: 3
 }];
 
-const recommendations =  [{
+const recommendations = [{
     name: 'Cap VI',
     src: '/images/cap.svg',
     price: '$10.22',
@@ -100,23 +100,6 @@ $(document).ready(() => {
             document.getElementById('sdk-settings').innerHTML = util.prettyPrint(response, null, 2);
             destroyFeedback(true);
         })
-        // $.ajax({
-        //     type: "POST",
-        //     contentType: "application/json",
-        //     url: "/get/settings",
-        //     data: JSON.stringify(settings),
-        //     dataType: 'json',
-        //     cache: false,
-        //     timeout: 600000,
-        //     success: function (data) {
-        //         document.getElementById('sdk-settings').innerHTML = util.prettyPrint(data, null, 2);
-        //         destroyFeedback(true);
-        //     },
-        //     error: function (data) {
-        //         document.getElementById('sdk-settings').innerHTML = util.prettyPrint(data, null, 2);
-        //         destroyFeedback(true);
-        //     }
-        // })
     }
 
     window.initVWOSDK = function (destroyFeedback) {
@@ -124,8 +107,8 @@ $(document).ready(() => {
         vwoInstance = vwoSdk.launch({
             settingsFile: settingsFile
         });
-        console.log("VWO launched from JavaScript SDK9")
-        if(vwoInstance != null) {
+        console.log("VWO launched from JavaScript SDK")
+        if (vwoInstance != null) {
             processInitResponse(capList)
         }
 
@@ -152,7 +135,6 @@ $(document).ready(() => {
 
     }
 
-    // window.trackCamp
     window.addEventListener('click', (ev) => {
         if (ev.target.parentElement.classList.contains('product-item')) {
             let userId = document.getElementById('user-id').value;
@@ -160,25 +142,13 @@ $(document).ready(() => {
             let goalIdentifier = document.getElementById('goal-identifier').value;
 
             if (goalIdentifier) {
-                let track = {};
-                track["userId"] = userId
-                track["campaignKey"] = campaignKey
-                track["goalIdentifier"] = goalIdentifier
 
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: "/track",
-                    data: JSON.stringify(track),
-                    dataType: 'json',
-                    cache: false,
-                    timeout: 600000,
-                    success: function (data) {
-                        {
-                            alert(data.msg);
-                        }
-                    },
-                })
+                let isGoalTracked = vwoInstance.track(campaignKey, userId, goalIdentifier)
+                if(isGoalTracked[campaignKey]) {
+                    alert("Goal Triggered")
+                } else {
+                    alert("Goal not Triggered")
+                }
             }
         }
     });
@@ -188,23 +158,31 @@ $(document).ready(() => {
             let userId = document.getElementById('user-id').value;
             let campaignKey = document.getElementById('campaign-key').value;
 
-            // let newurl = window.location.protocol + '//' + window.location.host + window.location.pathname + `?userId=${userId}`;
+            let activate = {}
+            activate["campaignKey"] = campaignKey
+            activate["userId"] = userId
 
-            // window.history.pushState({path:newurl},'',newurl);
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/activate",
+                data: JSON.stringify(activate),
+                dataType: 'json',
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    {
+                        console.log(data);
+                        let variation = data.variationName;
+                        let html = '';
+                        let productRecommendations = data.recommendations || [];
+                        (productRecommendations || []).forEach(function (recommendation) {
+                            let starsHtml = '';
 
-            var variationName = vwoInstance.activate(campaignKey, userId);
-            if(variationName !== null) {
-                console.log(variationName);
-                let variation = variationName;
-                let html = '';
-                let productRecommendations = variationName !== "Control" ? recommendations : [];
-                (productRecommendations || []).forEach(function (recommendation) {
-                    let starsHtml = '';
-
-                    for (let j = 0; j < recommendation.stars; j++) {
-                        starsHtml += `<span class="material-icons add-to-cart">star_rate</span>`;
-                    }
-                    html += `<div class="product-item product-item--one">
+                            for (let j = 0; j < recommendation.stars; j++) {
+                                starsHtml += `<span class="material-icons add-to-cart">star_rate</span>`;
+                            }
+                            html += `<div class="product-item product-item--one">
               <img src="${recommendation.src}">
               <div class="product-name">${recommendation.name}</div>
               <div class="product-price-box">
@@ -212,25 +190,25 @@ $(document).ready(() => {
                 <strong class="product-price">${recommendation.price}</strong>
               </div>
             </div>`
-                });
+                        });
 
-                if (productRecommendations.length) {
-                    document.getElementById('product-recommendations').classList.remove('hide');
-                    document.getElementById('product-list').classList.remove('s12');
-                    document.getElementById('product-list').classList.add('s9');
-                    document.getElementById('recommendations').innerHTML = html;
-                    document.getElementById('product-recommendations').classList.add('s3');
-                } else {
-                    document.getElementById('product-recommendations').classList.add('hide');
-                    document.getElementById('product-list').classList.remove('s9');
-                    document.getElementById('product-list').classList.add('s12');
-                }
+                        if (productRecommendations.length) {
+                            document.getElementById('product-recommendations').classList.remove('hide');
+                            document.getElementById('product-list').classList.remove('s12');
+                            document.getElementById('product-list').classList.add('s9');
+                            document.getElementById('recommendations').innerHTML = html;
+                            document.getElementById('product-recommendations').classList.add('s3');
+                        } else {
+                            document.getElementById('product-recommendations').classList.add('hide');
+                            document.getElementById('product-list').classList.remove('s9');
+                            document.getElementById('product-list').classList.add('s12');
+                        }
 
 
-                $('#sdk-result').html(`
+                        $('#sdk-result').html(`
             <span class="material-icons info-icon">info</span>
             <div style="margin-left: 50px;">
-              <strong>${userId}</strong> ${(variationName ? ' becomes ' : ' does not become ') + `part of the campaign: <strong>${campaignKey}</strong>`}
+              <strong>${userId}</strong> ${(data.variationName ? ' becomes ' : ' does not become ') + `part of the campaign: <strong>${campaignKey}</strong>`}
               <br />
               Serving
               <strong>${variation || 'Control'}</strong>
@@ -238,26 +216,10 @@ $(document).ready(() => {
               <strong>${userId}</strong>
             <div>`);
 
-                destroyFeedback(true);
-            }
-            let activate = {}
-            activate["campaignKey"] = campaignKey
-            activate["userId"] = userId
-
-            // $.ajax({
-            //     type: "POST",
-            //     contentType: "application/json",
-            //     url: "/activate",
-            //     data: JSON.stringify(activate),
-            //     dataType: 'json',
-            //     cache: false,
-            //     timeout: 600000,
-            //     success: function (data) {
-            //         {
-            //
-            //         }
-            //     },
-            // })
+                        destroyFeedback(true);
+                    }
+                },
+            })
         }
     }
 });
