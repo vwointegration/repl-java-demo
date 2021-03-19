@@ -73,6 +73,7 @@ const util = {
 
 var settingsFile;
 var vwoInstance;
+var variationAssigned;
 
 $(document).ready(() => {
     var stepper = document.querySelector('.stepper');
@@ -141,14 +142,16 @@ $(document).ready(() => {
             let campaignKey = document.getElementById('campaign-key').value;
             let goalIdentifier = document.getElementById('goal-identifier').value;
 
-            if (goalIdentifier) {
-
+            if (!variationAssigned) {
+                alert("Goal could not be tracked since no variation is assigned.")
+            } else {
                 let isGoalTracked = vwoInstance.track(campaignKey, userId, goalIdentifier)
-                if(isGoalTracked[campaignKey]) {
+                if (isGoalTracked[campaignKey]) {
                     alert("Goal Triggered")
                 } else {
                     alert("Goal not Triggered")
                 }
+
             }
         }
     });
@@ -173,7 +176,7 @@ $(document).ready(() => {
                 success: function (data) {
                     {
                         console.log(data);
-                        let variation = data.variationName;
+                        variationAssigned = data.variationName;
                         let html = '';
                         let productRecommendations = data.recommendations || [];
                         (productRecommendations || []).forEach(function (recommendation) {
@@ -211,7 +214,7 @@ $(document).ready(() => {
               <strong>${userId}</strong> ${(data.variationName ? ' becomes ' : ' does not become ') + `part of the campaign: <strong>${campaignKey}</strong>`}
               <br />
               Serving
-              <strong>${variation || 'Control'}</strong>
+              <strong>${variationAssigned || 'Control'}</strong>
               for the User ID:
               <strong>${userId}</strong>
             <div>`);

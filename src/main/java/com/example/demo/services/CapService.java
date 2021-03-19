@@ -12,7 +12,7 @@ public class CapService {
 
 
   public List<CapData> getAllCaps() {
-    capList = new ArrayList<>();
+    capList = new ArrayList<CapData>();
     capList.add(new CapData("Cap XLV", "/images/cap.svg", "$8.25", 3));
     capList.add(new CapData("Cap VIII", "/images/cap1.svg", "$11.00", 5));
     capList.add(new CapData("Cap XC", "/images/cap3.svg", "$10.50", 2));
@@ -23,7 +23,7 @@ public class CapService {
   }
 
   public List<CapData> getRecommendedCaps() {
-    capList = new ArrayList<>();
+    capList = new ArrayList<CapData>();
     capList.add(new CapData("Cap VI", "/images/cap.svg", "10.22", 3));
     capList.add(new CapData("Cap XXII", "/images/cap1.svg", "$8.98", 4));
 

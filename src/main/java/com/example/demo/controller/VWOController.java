@@ -62,8 +62,16 @@ public class VWOController {
     } else {
       variationAssigned = vwoInstance.activate(activateCriteria.getCampaignKey(), activateCriteria.getUserId(), activateCriteria.getAdditionalParams());
     }
+
+    if (variationAssigned == null) {
+      activateResponse.setRecommendations(new ArrayList<CapData>());
+      activateResponse.setVariationName(null);
+      activateResponse.setMsg("No Variation Assigned");
+      return ResponseEntity.ok(activateResponse);
+    }
+
     if (variationAssigned.equals("Control")) {
-      activateResponse.setRecommendations(new ArrayList<>());
+      activateResponse.setRecommendations(new ArrayList<CapData>());
     } else {
       activateResponse.setRecommendations(new CapService().getRecommendedCaps());
     }
@@ -88,7 +96,7 @@ public class VWOController {
 
     Map<String, Boolean> isGoalTracked;
     if (trackCriteria.getVwoAdditionalParams() != null) {
-      isGoalTracked = vwoInstance.track(trackCriteria.getCampaignKey(), trackCriteria.getUserId(),trackCriteria.getGoalIdentifier(), trackCriteria.getVwoAdditionalParams());
+      isGoalTracked = vwoInstance.track(trackCriteria.getCampaignKey(), trackCriteria.getUserId(), trackCriteria.getGoalIdentifier(), trackCriteria.getVwoAdditionalParams());
     } else {
       isGoalTracked = vwoInstance.track(trackCriteria.getCampaignKey(), trackCriteria.getUserId(), trackCriteria.getGoalIdentifier());
     }
