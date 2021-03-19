@@ -105,11 +105,10 @@ public class VWOController {
 
   @PostMapping("/launch")
   public ResponseEntity<?> launchVWO(@Validated @RequestBody SettingsCriteria settingsCriteria, Errors errors) {
-    LaunchResponse launchResponse = new LaunchResponse();
     SettingsResponse response = new SettingsResponse();
 
     if (errors.hasErrors()) {
-      response.setMsg(errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+      response.setMsg("Something went wrong. Please try again.");
       return ResponseEntity.badRequest().body(response);
     }
 
@@ -118,6 +117,8 @@ public class VWOController {
       response.setMsg("VWO could not be launched. Please try again");
       return ResponseEntity.status(400).body("Settings file could not be fetched. Please pass a valid accountId and apikey");
     } else {
+      response.setMsg("Settings fetched from VWO.");
+      response.setSettings(settingsFile);
       vwoInstance = VWO.launch(settingsFile).build();
       return ResponseEntity.ok(response);
     }
