@@ -20,7 +20,6 @@
 <div style="padding: 10px 20px;">
     <h4 class="center  color-blue">VWO JavaScript & JAVA SDK Example</h4>
     <ul class="stepper  linear">
-<!--    <ul>-->
         <li class="step active">
             <div data-step-label="Fetch Settings" class="step-title waves-effect waves-dark">Step 1</div>
             <div class="step-content">
@@ -88,7 +87,7 @@ await vwoSDK.launch({
                 </div>
                 <div class="row">
                     <div class="col m2">
-                        <div class="card waves-effect waves-dark" onclick="ashleySelected()" id="ashley_card">
+                        <div class="card waves-effect waves-dark" onclick="onUserSelected('ashley')" id="ashley_card">
                             <div class="card-content white-text">
                                 <span class="card-title blue-text">Ashley</span>
                                 <p class="black-text">Age: 26<br> Frequent-buyer: True<br>Gender: Female</p>
@@ -97,7 +96,7 @@ await vwoSDK.launch({
                         </div>
                     </div>
                     <div class="col m2">
-                        <div class="card waves-effect waves-dark"  onclick="chrisSelected()" id="chris_card">
+                        <div class="card waves-effect waves-dark"  onclick="onUserSelected('chris')" id="chris_card">
                             <div class="card-content blue-text">
                                 <span class="card-title blue-text">Chris</span>
                                 <p class="black-text">Age: 26<br> Frequent-buyer: True<br>Gender: Male</p>
@@ -105,7 +104,7 @@ await vwoSDK.launch({
                         </div>
                     </div>
                     <div class="col m3">
-                        <div class="card waves-effect waves-dark"  onclick="samSelected()" id="sam_card">
+                        <div class="card waves-effect waves-dark"  onclick="onUserSelected('sam')" id="sam_card">
                             <div class="card-content white-text">
                                 <span class="card-title blue-text">Sam</span>
                                 <p class="black-text">Age: 26<br> Frequent-buyer: False<br>Gender: Male</p>

@@ -277,49 +277,55 @@ function processInitResponse(data) {
 
 }
 
-function ashleySelected() {
-    if (cardSelected && cardSelected === 'ashley') {
-        cardSelected = undefined
-        document.getElementById('user-id').value = ''
-        document.getElementById("ashley_card").setAttribute("style", "border-color: #42a5f5")
-    } else {
-        cardSelected = 'ashley'
-        document.getElementById('user-id').focus()
-        document.getElementById('user-id').value = 'Ashley'
-        document.getElementById("ashley_card").setAttribute("style", "border-color: #009900")
-        document.getElementById("chris_card").setAttribute("style", "border-color: #42a5f5")
-        document.getElementById("sam_card").setAttribute("style", "border-color: #42a5f5")
-    }
-}
-
-function chrisSelected() {
-    if (cardSelected && cardSelected === 'chris') {
-        cardSelected = undefined
-        document.getElementById('user-id').value = ''
-        document.getElementById("chris_card").setAttribute("style", "border-color: #42a5f5")
-    } else {
-        cardSelected = 'chris'
-        document.getElementById('user-id').focus()
-        document.getElementById('user-id').value = 'Chris'
-        document.getElementById("chris_card").setAttribute("style", "border-color: #009900")
-        document.getElementById("ashley_card").setAttribute("style", "border-color: #42a5f5")
-        document.getElementById("sam_card").setAttribute("style", "border-color: #42a5f5")
-    }
-}
-
-function samSelected() {
-    if (cardSelected && cardSelected === 'sam') {
-        cardSelected = undefined
-        document.getElementById('user-id').value = ''
-        document.getElementById("sam_card").setAttribute("style", "border-color: #42a5f5")
-    } else {
-        cardSelected = 'sam'
-        document.getElementById('user-id').focus()
-        document.getElementById('user-id').value = 'Sam'
-        document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", false);`
-        document.getElementById("sam_card").setAttribute("style", "border-color: #009900")
-        document.getElementById("chris_card").setAttribute("style", "border-color: #42a5f5")
-        document.getElementById("ashley_card").setAttribute("style", "border-color: #42a5f5")
+function onUserSelected(user) {
+    switch (user) {
+        case 'ashley':
+            if (cardSelected && cardSelected === 'ashley') {
+                cardSelected = undefined
+                document.getElementById('user-id').value = ''
+                document.getElementById("ashley_card").classList.remove("border-color-green");
+            } else {
+                cardSelected = 'ashley'
+                document.getElementById('user-id').focus()
+                document.getElementById('user-id').value = 'Ashley'
+                document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", true);`
+                document.getElementById("ashley_card").classList.add("border-color-green");
+                document.getElementById("chris_card").classList.remove("border-color-green");
+                document.getElementById("sam_card").classList.remove("border-color-green");
+            }
+            break;
+        case 'chris':
+            if (cardSelected && cardSelected === 'chris') {
+                cardSelected = undefined
+                document.getElementById('user-id').value = ''
+                document.getElementById("chris_card").classList.remove("border-color-green");
+            } else {
+                cardSelected = 'chris'
+                document.getElementById('user-id').focus()
+                document.getElementById('user-id').value = 'Chris'
+                document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", true);`
+                document.getElementById("chris_card").classList.add("border-color-green");
+                document.getElementById("ashley_card").classList.remove("border-color-green");
+                document.getElementById("sam_card").classList.remove("border-color-green");
+            }
+            break;
+        case 'sam':
+            if (cardSelected && cardSelected === 'sam') {
+                cardSelected = undefined
+                document.getElementById('user-id').value = ''
+                document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", true);`
+                document.getElementById("sam_card").classList.remove("border-color-green");
+            } else {
+                cardSelected = 'sam'
+                document.getElementById('user-id').focus()
+                document.getElementById('user-id').value = 'Sam'
+                document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", false);`
+                document.getElementById("sam_card").classList.add("border-color-green");
+                document.getElementById("chris_card").classList.remove("border-color-green");
+                document.getElementById("ashley_card").classList.remove("border-color-green");
+            }
+            break
+        default:
     }
 }
 
