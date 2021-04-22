@@ -3,12 +3,15 @@
     justify-content: center;
     align-items: center;
 }
+
 .margin--top {
     margin-top: 20px;
 }
+
 .margin--left {
     margin-left: 20px;
 }
+
 .margin-half--left {
     margin-left: 10px;
 }
@@ -29,12 +32,15 @@ button {
     font-size: 18px;
     text-decoration: none;
 }
+
 button.v1 {
     border: 2px solid #ff9a9a;
 }
+
 button.v2 {
     border: 2px solid #57e0a2;
 }
+
 button.v3 {
     border: 2px solid #00a8ff;
 }
@@ -46,12 +52,15 @@ pre {
     max-height: 40vh;
     overflow: auto;
 }
+
 .json-key {
     color: brown;
 }
+
 .json-value {
     color: navy;
 }
+
 .json-string {
     color: olive;
 }
@@ -62,12 +71,14 @@ pre {
     height: 100%;
     max-height: 100%;
 }
+
 .left-container {
     flex: 0 1 50%;
     max-width: 50%;
     min-height: 100%;
     margin: 0 10px;
 }
+
 .right-container {
     flex: 0 1 50%;
     display: flex;
@@ -77,6 +88,7 @@ pre {
     align-items: flex-start;
     margin: 0 10px;
 }
+
 .half-containers {
     flex: 0 0 100%;
     max-height: 50%;
@@ -95,6 +107,7 @@ pre {
 .stepper {
     height: 100%;
 }
+
 .step-content {
     /* height: 100% !important; */
 }
@@ -177,4 +190,12 @@ pre {
     width: 50px;
     height: 100%;
     padding: 20px 0 20px 0;
+}
+
+.card {
+    border: 2px solid #42a5f5;
+}
+
+.card .selected {
+    border: 2px solid #da4d4d;
 }
