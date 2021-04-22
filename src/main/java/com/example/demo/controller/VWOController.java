@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.*;
 import com.example.demo.services.CapService;
 import com.vwo.VWO;
+import com.vwo.VWOAdditionalParams;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -42,6 +44,7 @@ public class VWOController {
   @PostMapping("/activate")
   public ResponseEntity<?> activateCampaign(@Validated @RequestBody ActivateCriteria activateCriteria, Errors errors) {
     ActivateResponse activateResponse = new ActivateResponse();
+    activateResponse.setStatus(false);
     if (errors.hasErrors()) {
       activateResponse.setMsg("Something went wrong. Please try again");
       return ResponseEntity.ok(activateResponse);
@@ -66,7 +69,7 @@ public class VWOController {
     if (variationAssigned == null) {
       activateResponse.setRecommendations(new ArrayList<CapData>());
       activateResponse.setVariationName(null);
-      activateResponse.setMsg("No Variation Assigned");
+      activateResponse.setMsg("No Variation Assigned to the user " + activateCriteria.getUserId());
       return ResponseEntity.ok(activateResponse);
     }
 
@@ -77,6 +80,7 @@ public class VWOController {
     }
     activateResponse.setVariationName(variationAssigned);
     activateResponse.setMsg("success");
+    activateResponse.setStatus(true);
 
     return ResponseEntity.ok(activateResponse);
   }

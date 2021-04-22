@@ -66,7 +66,7 @@ await vwoSDK.launch({
             </div>
         </li>
         <li class="step">
-            <div data-step-label="Identify user by assigning unique ID" class="step-title waves-effect waves-dark">Step
+            <div data-step-label="Target Frequent-buyer users by assigning unique user ID" class="step-title waves-effect waves-dark">Step
                 3
             </div>
             <div class="step-content" style="">
@@ -77,7 +77,7 @@ await vwoSDK.launch({
                         <label for="campaign-key">Campaign Key</label>
                     </div>
                     <div class="input-field col s3">
-                        <input id="user-id" name="user-id" type="text" class="validate" required="">
+                        <input id="user-id" name="user-id" type="text" class="validate" required="" onkeydown="onUserIdChanged()">
                         <label for="user-id">User ID</label>
                     </div>
                     <div class="input-field col s3">
@@ -85,9 +85,43 @@ await vwoSDK.launch({
                         <label for="goal-identifier">Goal Identifier</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col m2">
+                        <div class="card waves-effect waves-dark" onclick="onUserSelected('ashley')" id="ashley_card">
+                            <div class="card-content white-text">
+                                <span class="card-title blue-text">Ashley</span>
+                                <p class="black-text">Age: 26<br> Frequent-buyer: True<br>Gender: Female</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col m2">
+                        <div class="card waves-effect waves-dark"  onclick="onUserSelected('chris')" id="chris_card">
+                            <div class="card-content blue-text">
+                                <span class="card-title blue-text">Chris</span>
+                                <p class="black-text">Age: 26<br> Frequent-buyer: True<br>Gender: Male</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col m3">
+                        <div class="card waves-effect waves-dark"  onclick="onUserSelected('sam')" id="sam_card">
+                            <div class="card-content white-text">
+                                <span class="card-title blue-text">Sam</span>
+                                <p class="black-text">Age: 26<br> Frequent-buyer: False<br>Gender: Male</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <pre><code id="activate-code">
 // SDK Code to activate campaign in Java
-vwoInstance.activate(campaignKey, userId);</code></pre>
+
+Map customVariables = new HashMap();
+<div id="custom_variable">customVariables.put("frequent_buyer", true);</div>
+
+VWOAdditionalParams params = new VWOAdditionalParams();
+params.setCustomVariables(customVariables);
+
+vwoInstance.activate(campaignKey, userId, params);</code></pre>
 
 
                 <div class="step-actions">

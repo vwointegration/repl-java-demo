@@ -6,6 +6,7 @@ public class ActivateResponse {
   String msg;
   List<CapData> recommendations;
   String variationName;
+  boolean status;
 
 
   //getters and setters
@@ -31,5 +32,13 @@ public class ActivateResponse {
 
   public void setMsg(String msg) {
     this.msg = msg;
+  }
+
+  public boolean getStatus() {
+    return status;
+  }
+
+  public void setStatus(boolean status) {
+    this.status = status;
   }
 }

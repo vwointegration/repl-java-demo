@@ -74,6 +74,7 @@ const util = {
 var settingsFile;
 var vwoInstance;
 var variationAssigned;
+var cardSelected;
 
 $(document).ready(() => {
     var stepper = document.querySelector('.stepper');
@@ -141,11 +142,20 @@ $(document).ready(() => {
             let userId = document.getElementById('user-id').value;
             let campaignKey = document.getElementById('campaign-key').value;
             let goalIdentifier = document.getElementById('goal-identifier').value;
+            let options = {
+                customVariables: {
+                    frequent_buyer: true
+                }
+            }
+
+            if (cardSelected && cardSelected === 'sam') {
+                options.customVariables.frequent_buyer = false
+            }
 
             if (!variationAssigned) {
                 alert("Goal could not be tracked since no variation is assigned.")
             } else {
-                let isGoalTracked = vwoInstance.track(campaignKey, userId, goalIdentifier)
+                let isGoalTracked = vwoInstance.track(campaignKey, userId, goalIdentifier, options)
                 if (isGoalTracked[campaignKey]) {
                     alert("Goal Triggered")
                 } else {
@@ -160,10 +170,19 @@ $(document).ready(() => {
         if (history.pushState) {
             let userId = document.getElementById('user-id').value;
             let campaignKey = document.getElementById('campaign-key').value;
+            let params = {
+                customVariables: {
+                    frequent_buyer: true
+                }
+            }
+            if (cardSelected && cardSelected === 'sam') {
+                params.customVariables.frequent_buyer = false
+            }
 
             let activate = {}
             activate["campaignKey"] = campaignKey
             activate["userId"] = userId
+            activate['additionalParams'] = params
 
             $.ajax({
                 type: "POST",
@@ -176,16 +195,17 @@ $(document).ready(() => {
                 success: function (data) {
                     {
                         console.log(data);
-                        variationAssigned = data.variationName;
-                        let html = '';
-                        let productRecommendations = data.recommendations || [];
-                        (productRecommendations || []).forEach(function (recommendation) {
-                            let starsHtml = '';
+                        if (data.status) {
+                            variationAssigned = data.variationName;
+                            let html = '';
+                            let productRecommendations = data.recommendations || [];
+                            (productRecommendations || []).forEach(function (recommendation) {
+                                let starsHtml = '';
 
-                            for (let j = 0; j < recommendation.stars; j++) {
-                                starsHtml += `<span class="material-icons add-to-cart">star_rate</span>`;
-                            }
-                            html += `<div class="product-item product-item--one">
+                                for (let j = 0; j < recommendation.stars; j++) {
+                                    starsHtml += `<span class="material-icons add-to-cart">star_rate</span>`;
+                                }
+                                html += `<div class="product-item product-item--one">
               <img src="${recommendation.src}">
               <div class="product-name">${recommendation.name}</div>
               <div class="product-price-box">
@@ -193,22 +213,22 @@ $(document).ready(() => {
                 <strong class="product-price">${recommendation.price}</strong>
               </div>
             </div>`
-                        });
+                            });
 
-                        if (productRecommendations.length) {
-                            document.getElementById('product-recommendations').classList.remove('hide');
-                            document.getElementById('product-list').classList.remove('s12');
-                            document.getElementById('product-list').classList.add('s9');
-                            document.getElementById('recommendations').innerHTML = html;
-                            document.getElementById('product-recommendations').classList.add('s3');
-                        } else {
-                            document.getElementById('product-recommendations').classList.add('hide');
-                            document.getElementById('product-list').classList.remove('s9');
-                            document.getElementById('product-list').classList.add('s12');
-                        }
+                            if (productRecommendations.length) {
+                                document.getElementById('product-recommendations').classList.remove('hide');
+                                document.getElementById('product-list').classList.remove('s12');
+                                document.getElementById('product-list').classList.add('s9');
+                                document.getElementById('recommendations').innerHTML = html;
+                                document.getElementById('product-recommendations').classList.add('s3');
+                            } else {
+                                document.getElementById('product-recommendations').classList.add('hide');
+                                document.getElementById('product-list').classList.remove('s9');
+                                document.getElementById('product-list').classList.add('s12');
+                            }
 
 
-                        $('#sdk-result').html(`
+                            $('#sdk-result').html(`
             <span class="material-icons info-icon">info</span>
             <div style="margin-left: 50px;">
               <strong>${userId}</strong> ${(data.variationName ? ' becomes ' : ' does not become ') + `part of the campaign: <strong>${campaignKey}</strong>`}
@@ -218,8 +238,12 @@ $(document).ready(() => {
               for the User ID:
               <strong>${userId}</strong>
             <div>`);
+                            destroyFeedback(true);
+                        } else {
+                            alert(data.msg)
+                            destroyFeedback(false)
+                        }
 
-                        destroyFeedback(true);
                     }
                 },
             })
@@ -250,5 +274,62 @@ function processInitResponse(data) {
 
     document.getElementById('product-list111').innerHTML = html;
 
+
+}
+
+function onUserSelected(user) {
+    switch (user) {
+        case 'ashley':
+            if (cardSelected && cardSelected === 'ashley') {
+                cardSelected = undefined
+                document.getElementById('user-id').value = ''
+                document.getElementById("ashley_card").classList.remove("border-color-green");
+            } else {
+                cardSelected = 'ashley'
+                document.getElementById('user-id').focus()
+                document.getElementById('user-id').value = 'Ashley'
+                document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", true);`
+                document.getElementById("ashley_card").classList.add("border-color-green");
+                document.getElementById("chris_card").classList.remove("border-color-green");
+                document.getElementById("sam_card").classList.remove("border-color-green");
+            }
+            break;
+        case 'chris':
+            if (cardSelected && cardSelected === 'chris') {
+                cardSelected = undefined
+                document.getElementById('user-id').value = ''
+                document.getElementById("chris_card").classList.remove("border-color-green");
+            } else {
+                cardSelected = 'chris'
+                document.getElementById('user-id').focus()
+                document.getElementById('user-id').value = 'Chris'
+                document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", true);`
+                document.getElementById("chris_card").classList.add("border-color-green");
+                document.getElementById("ashley_card").classList.remove("border-color-green");
+                document.getElementById("sam_card").classList.remove("border-color-green");
+            }
+            break;
+        case 'sam':
+            if (cardSelected && cardSelected === 'sam') {
+                cardSelected = undefined
+                document.getElementById('user-id').value = ''
+                document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", true);`
+                document.getElementById("sam_card").classList.remove("border-color-green");
+            } else {
+                cardSelected = 'sam'
+                document.getElementById('user-id').focus()
+                document.getElementById('user-id').value = 'Sam'
+                document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", false);`
+                document.getElementById("sam_card").classList.add("border-color-green");
+                document.getElementById("chris_card").classList.remove("border-color-green");
+                document.getElementById("ashley_card").classList.remove("border-color-green");
+            }
+            break
+        default:
+    }
+}
+
+function onUserIdChanged() {
+    document.getElementById('custom_variable').innerHTML = `customVariables.put("frequent_buyer", true);`
 }
 
