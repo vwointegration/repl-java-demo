@@ -238,9 +238,10 @@ $(document).ready(() => {
               for the User ID:
               <strong>${userId}</strong>
             <div>`);
+                            document.getElementById('error-msg').style.display = "none";
                             destroyFeedback(true);
                         } else {
-                            alert(data.msg)
+                            document.getElementById('error-msg').style.display = "block";
                             destroyFeedback(false)
                         }
 
